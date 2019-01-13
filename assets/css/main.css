@@ -718,18 +718,18 @@ a.back-to-top:hover, a.back-to-top:focus {
 /* ==========================================================================
 3. Welcome Area
 ========================================================================== */
-.welcome-area-bg {
-  background: url(../img/welcome-area.jpg) no-repeat;
+.welcome-bg {
+  background: url(../img/welcome.jpg) no-repeat;
   background-size: cover;
 }
 
-#welcome-area {
+#welcome {
   color: #fff;
   overflow: hidden;
   position: relative;
 }
 
-#welcome-area .overlay {
+#welcome .overlay {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -739,15 +739,15 @@ a.back-to-top:hover, a.back-to-top:focus {
   opacity: 0.6;
 }
 
-#welcome-area .contents {
+#welcome .contents {
   padding: 175px 0px 120px;
 }
 
-#welcome-area .contents h5 {
+#welcome .contents h5 {
   font-size: 50px;
 }
 
-#welcome-area .contents .head-title {
+#welcome .contents .head-title {
   color: #fff;
   font-size: 80px;
   letter-spacing: 10px;
@@ -755,7 +755,7 @@ a.back-to-top:hover, a.back-to-top:focus {
   font-weight: 700;
 }
 
-#welcome-area .contents p {
+#welcome .contents p {
   font-size: 30px;
   color: #fff;
   font-weight: 400;
@@ -763,16 +763,16 @@ a.back-to-top:hover, a.back-to-top:focus {
   margin-bottom: 25px;
 }
 
-#welcome-area .contents .btn {
+#welcome .contents .btn {
   margin: 25px 0px;
   text-transform: uppercase;
 }
 
-#welcome-area .banner_bottom_btn {
+#welcome .banner_bottom_btn {
   margin-top: 40px;
 }
 
-#welcome-area .banner_bottom_btn i {
+#welcome .banner_bottom_btn i {
   color: #fff;
   font-size: 48px;
   -webkit-transition: all 0.2s linear;
@@ -781,7 +781,7 @@ a.back-to-top:hover, a.back-to-top:focus {
   transition: all 0.2s linear;
 }
 
-#welcome-area .banner_bottom_btn i:hover {
+#welcome .banner_bottom_btn i:hover {
   color: #ddd;
 }
 

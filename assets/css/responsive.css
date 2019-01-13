@@ -1,6 +1,6 @@
 /* only small desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
-  #welcome-area .contents .head-title {
+  #welcome .contents .head-title {
     font-size: 40px;
   }
   .accomplishments-item .accomplishments-content h3 a {
@@ -51,16 +51,16 @@
   .navbar-brand img {
     margin: 5px 0;
   }
-  #welcome-area .contents {
+  #welcome .contents {
     padding: 100px 0px 60px 0px;
   }
-  #welcome-area .contents .head-title {
+  #welcome .contents .head-title {
     font-size: 22px;
   }
-  #welcome-area .contents h5 {
+  #welcome .contents h5 {
     font-size: 32px;
   }
-  #welcome-area .contents p {
+  #welcome .contents p {
     font-size: 20px;
   }
   .accomplishments-item {
