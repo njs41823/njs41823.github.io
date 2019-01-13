@@ -61,7 +61,7 @@ ul li, ol li {
   list-style: none;
 }
 
-.hero-heading {
+.welcome-heading {
   font-size: 48px;
   font-weight: 700;
   color: #fff;
@@ -70,7 +70,7 @@ ul li, ol li {
   letter-spacing: 0.1rem;
 }
 
-.hero-sub-heading {
+.welcome-sub-heading {
   font-size: 20px;
   font-weight: 400;
   color: #e6e6e6;
@@ -716,20 +716,20 @@ a.back-to-top:hover, a.back-to-top:focus {
 }
 
 /* ==========================================================================
-3. Hero Area
+3. Welcome Area
 ========================================================================== */
-.hero-area-bg {
-  background: url(../img/hero-area.jpg) no-repeat;
+.welcome-area-bg {
+  background: url(../img/welcome-area.jpg) no-repeat;
   background-size: cover;
 }
 
-#hero-area {
+#welcome-area {
   color: #fff;
   overflow: hidden;
   position: relative;
 }
 
-#hero-area .overlay {
+#welcome-area .overlay {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -739,15 +739,15 @@ a.back-to-top:hover, a.back-to-top:focus {
   opacity: 0.6;
 }
 
-#hero-area .contents {
+#welcome-area .contents {
   padding: 175px 0px 120px;
 }
 
-#hero-area .contents h5 {
+#welcome-area .contents h5 {
   font-size: 50px;
 }
 
-#hero-area .contents .head-title {
+#welcome-area .contents .head-title {
   color: #fff;
   font-size: 80px;
   letter-spacing: 10px;
@@ -755,7 +755,7 @@ a.back-to-top:hover, a.back-to-top:focus {
   font-weight: 700;
 }
 
-#hero-area .contents p {
+#welcome-area .contents p {
   font-size: 30px;
   color: #fff;
   font-weight: 400;
@@ -763,16 +763,16 @@ a.back-to-top:hover, a.back-to-top:focus {
   margin-bottom: 25px;
 }
 
-#hero-area .contents .btn {
+#welcome-area .contents .btn {
   margin: 25px 0px;
   text-transform: uppercase;
 }
 
-#hero-area .banner_bottom_btn {
+#welcome-area .banner_bottom_btn {
   margin-top: 40px;
 }
 
-#hero-area .banner_bottom_btn i {
+#welcome-area .banner_bottom_btn i {
   color: #fff;
   font-size: 48px;
   -webkit-transition: all 0.2s linear;
@@ -781,7 +781,7 @@ a.back-to-top:hover, a.back-to-top:focus {
   transition: all 0.2s linear;
 }
 
-#hero-area .banner_bottom_btn i:hover {
+#welcome-area .banner_bottom_btn i:hover {
   color: #ddd;
 }
 
