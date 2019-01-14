@@ -5,7 +5,7 @@
   /*
  Visitor Logging
  ========================================================================== */
-  var logUrl = 'https://api.jsonbin.io/b/5c3c01bd05d34b26f20908b1';
+  var logUrl = 'https://api.jsonbin.io/b/5c3c13ef2c87fa27306df669';
   var secretKey = '$2a$10$HU43xxVDiRTqGEnItKjeiOUchrplL.Gj1oU6cPbhBVs6woqB208NO';
 
   function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
