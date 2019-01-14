@@ -1,55 +1,12 @@
 (function ($) {
-  
-  "use strict";  
+
+  "use strict";
 
   /*
  Visitor Logging
  ========================================================================== */
   var logUrl = 'https://api.jsonbin.io/b/5c3c01bd05d34b26f20908b1';
   var secretKey = '$2a$10$HU43xxVDiRTqGEnItKjeiOUchrplL.Gj1oU6cPbhBVs6woqB208NO';
-
-  getUserIP(function (ip) {
-    var country = geoplugin_countryName();
-    var region = geoplugin_region();
-    var city = geoplugin_city();
-    $.ajax({
-      url: 'http://worldclockapi.com/api/json/est/now',
-      dataType: 'json',
-      success: function (response) {
-        getLogDataAndLogVisit(
-          {
-            Time: response.currentDateTime,
-            IP: ip,
-            Location: {
-              City: city,
-              Region: region,
-              Country: country
-            }
-          }
-        );
-      },
-      error: function () {
-        var today = new Date();
-        getLogDataAndLogVisit(
-          {
-            ClientTime:
-              today.getFullYear() + '-' +
-              (today.getMonth() + 1) + '-' +
-              today.getDate() + ' ' +
-              today.getHours() + ':' +
-              today.getMinutes() + ':' +
-              today.getSeconds(),
-            IP: ip,
-            Location: {
-              City: city,
-              Region: region,
-              Country: country
-            }
-          }
-        );
-      }
-    });
-  });
 
   function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
     //compatibility for firefox and chrome
@@ -89,75 +46,99 @@
     };
   }
 
-
-  function getLogDataAndLogVisit(visitData) {
+  getUserIP(function (ip) {
     $.ajax({
-      url: logUrl + '/latest',
-      method: 'GET',
-      beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); },
-      success: function (response) {
-        response.Visits.push(visitData);
-        logVisit(response);
+      url: 'https://ipinfo.io/' + ip + '/json?token=eac4c2a4fcd091',
+      success: function (ipInfoResponse) {
+        var today = new Date();
+        var timestamp = today.getFullYear() + '-' +
+          (today.getMonth() + 1) + '-' +
+          today.getDate() + ' ' +
+          today.getHours() + ':' +
+          today.getMinutes() + ':' +
+          today.getSeconds();
+          ipInfoResponse.clientTimestamp = timestamp;
+        $.ajax({
+          url: logUrl + '/latest',
+          method: 'GET',
+          beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); },
+          success: function (getLogResponse) {
+            getLogResponse.Visits.push(ipInfoResponse);
+            $.ajax({
+              url: logUrl,
+              method: 'PUT',
+              contentType: 'application/json',
+              data: JSON.stringify(getLogResponse),
+              beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); },
+              success: function(updateLogResponse) {
+                if (updateLogResponse.success == true) {
+                  console.log('Log successful.');
+                } else {
+                  console.log('Failed to update log data.');
+                }
+              },
+              error: function() {
+                console.log('Failed to update log data.');
+              }
+            });
+          },
+          error: function() {
+            console.log('Failed to retrieve log data.');
+          }
+        });
+      },
+      error: function() {
+        console.log('Failed to retrieve IP info.');
       }
     });
-  }
-
-  function logVisit(visitData) {
-    $.ajax({
-      url: logUrl,
-      method: 'PUT',
-      contentType: 'application/json',
-      data: JSON.stringify(visitData),
-      beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); }
-    });
-  }
+  })
 
   $(window).on('load', function () {
 
     /* 
    MixitUp
    ========================================================================== */
-  $('#video').mixItUp();
+    $('#video').mixItUp();
 
-  /* 
-   One Page Navigation & wow js
-   ========================================================================== */
+    /* 
+     One Page Navigation & wow js
+     ========================================================================== */
     var OnePNav = $('.onepage-nev');
     var top_offset = OnePNav.height() - -0;
     OnePNav.onePageNav({
       currentClass: 'active',
       scrollOffset: top_offset,
     });
-  
-  /*Page Loader active
-    ========================================================*/
+
+    /*Page Loader active
+      ========================================================*/
     $('#preloader').fadeOut();
 
-  // Sticky Nav
-    $(window).on('scroll', function() {
-        if ($(window).scrollTop() > 200) {
-            $('.scrolling-navbar').addClass('top-nav-collapse');
-        } else {
-            $('.scrolling-navbar').removeClass('top-nav-collapse');
-        }
+    // Sticky Nav
+    $(window).on('scroll', function () {
+      if ($(window).scrollTop() > 200) {
+        $('.scrolling-navbar').addClass('top-nav-collapse');
+      } else {
+        $('.scrolling-navbar').removeClass('top-nav-collapse');
+      }
     });
 
     /* slicknav mobile menu active  */
     $('.mobile-menu').slicknav({
-        prependTo: '.navbar-header',
-        parentTag: 'liner',
-        allowParentLinks: true,
-        duplicate: true,
-        label: '',
-        closedSymbol: '<i class="icon-arrow-right"></i>',
-        openedSymbol: '<i class="icon-arrow-down"></i>',
-      });
+      prependTo: '.navbar-header',
+      parentTag: 'liner',
+      allowParentLinks: true,
+      duplicate: true,
+      label: '',
+      closedSymbol: '<i class="icon-arrow-right"></i>',
+      openedSymbol: '<i class="icon-arrow-down"></i>',
+    });
 
-      /* WOW Scroll Spy
-    ========================================================*/
-     var wow = new WOW({
+    /* WOW Scroll Spy
+  ========================================================*/
+    var wow = new WOW({
       //disabled for mobile
-        mobile: false
+      mobile: false
     });
 
     wow.init();
@@ -165,40 +146,40 @@
     /* Nivo Lightbox 
     ========================================================*/
     $('.lightbox').nivoLightbox({
-        effect: 'fadeScale',
-        keyboardNav: true,
-      });
+      effect: 'fadeScale',
+      keyboardNav: true,
+    });
 
     /* Counter
     ========================================================*/
     $('.counterUp').counterUp({
-     delay: 10,
-     time: 1000
+      delay: 10,
+      time: 1000
     });
 
 
     /* Back Top Link active
     ========================================================*/
-      var offset = 200;
-      var duration = 500;
-      $(window).scroll(function() {
-        if ($(this).scrollTop() > offset) {
-          $('.back-to-top').fadeIn(400);
-        } else {
-          $('.back-to-top').fadeOut(400);
-        }
-      });
+    var offset = 200;
+    var duration = 500;
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > offset) {
+        $('.back-to-top').fadeIn(400);
+      } else {
+        $('.back-to-top').fadeOut(400);
+      }
+    });
 
-      $('.back-to-top').on('click',function(event) {
-        event.preventDefault();
-        $('html, body').animate({
-          scrollTop: 0
-        }, 600);
-        return false;
-      });
+    $('.back-to-top').on('click', function (event) {
+      event.preventDefault();
+      $('html, body').animate({
+        scrollTop: 0
+      }, 600);
+      return false;
+    });
 
 
 
-  });      
+  });
 
 }(jQuery));
