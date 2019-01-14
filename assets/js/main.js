@@ -1,8 +1,118 @@
-(function($) {
+(function ($) {
   
   "use strict";  
 
-  $(window).on('load', function() {
+  /*
+ Visitor Logging
+ ========================================================================== */
+  var logUrl = 'https://api.jsonbin.io/b/5c3c01bd05d34b26f20908b1';
+  var secretKey = '$2a$10$HU43xxVDiRTqGEnItKjeiOUchrplL.Gj1oU6cPbhBVs6woqB208NO';
+
+  getUserIP(function (ip) {
+    var country = geoplugin_countryName();
+    var region = geoplugin_region();
+    var city = geoplugin_city();
+    $.ajax({
+      url: 'http://worldclockapi.com/api/json/est/now',
+      dataType: 'json',
+      success: function (response) {
+        getLogDataAndLogVisit(
+          {
+            Time: response.currentDateTime,
+            IP: ip,
+            Location: {
+              City: city,
+              Region: region,
+              Country: country
+            }
+          }
+        );
+      },
+      error: function () {
+        var today = new Date();
+        getLogDataAndLogVisit(
+          {
+            ClientTime:
+              today.getFullYear() + '-' +
+              (today.getMonth() + 1) + '-' +
+              today.getDate() + ' ' +
+              today.getHours() + ':' +
+              today.getMinutes() + ':' +
+              today.getSeconds(),
+            IP: ip,
+            Location: {
+              City: city,
+              Region: region,
+              Country: country
+            }
+          }
+        );
+      }
+    });
+  });
+
+  function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+    //compatibility for firefox and chrome
+    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    var pc = new myPeerConnection({
+      iceServers: []
+    }),
+      noop = function () { },
+      localIPs = {},
+      ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+      key;
+
+    function iterateIP(ip) {
+      if (!localIPs[ip]) onNewIP(ip);
+      localIPs[ip] = true;
+    }
+
+    //create a bogus data channel
+    pc.createDataChannel("");
+
+    // create offer and set local description
+    pc.createOffer().then(function (sdp) {
+      sdp.sdp.split('\n').forEach(function (line) {
+        if (line.indexOf('candidate') < 0) return;
+        line.match(ipRegex).forEach(iterateIP);
+      });
+
+      pc.setLocalDescription(sdp, noop, noop);
+    }).catch(function (reason) {
+      // An error occurred, so handle the failure to connect
+    });
+
+    //listen for candidate events
+    pc.onicecandidate = function (ice) {
+      if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+      ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+    };
+  }
+
+
+  function getLogDataAndLogVisit(visitData) {
+    $.ajax({
+      url: logUrl + '/latest',
+      method: 'GET',
+      beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); },
+      success: function (response) {
+        response.Visits.push(visitData);
+        logVisit(response);
+      }
+    });
+  }
+
+  function logVisit(visitData) {
+    $.ajax({
+      url: logUrl,
+      method: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(visitData),
+      beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); }
+    });
+  }
+
+  $(window).on('load', function () {
 
     /* 
    MixitUp
