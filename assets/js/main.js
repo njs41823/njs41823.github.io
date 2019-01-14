@@ -72,23 +72,23 @@
               beforeSend: function (xhr) { xhr.setRequestHeader('secret-key', secretKey); },
               success: function(updateLogResponse) {
                 if (updateLogResponse.success == true) {
-                  console.log('Log successful.');
+                  console.log('Visitor log successful.');
                 } else {
-                  console.log('Failed to update log data.');
+                  console.log('Failed to update visitor log data.');
                 }
               },
               error: function() {
-                console.log('Failed to update log data.');
+                console.log('Failed to update visitor log data.');
               }
             });
           },
           error: function() {
-            console.log('Failed to retrieve log data.');
+            console.log('Failed to retrieve visitor log data.');
           }
         });
       },
       error: function() {
-        console.log('Failed to retrieve IP info.');
+        console.log('Failed to retrieve visitor IP info.');
       }
     });
   })
