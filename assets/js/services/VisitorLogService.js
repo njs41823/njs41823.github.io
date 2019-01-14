@@ -4,7 +4,7 @@ Visitor Logging
 var visitorLogBinId = '5c3c13ef2c87fa27306df669';
 var secretKey = '$2a$10$HU43xxVDiRTqGEnItKjeiOUchrplL.Gj1oU6cPbhBVs6woqB208NO';
 
-function LogVisits(onNewIP) { //  onNewIp - your listener function for new IPs
+function LogVisits(onVisit) { //  onVisit - your listener function for new IPs
   //compatibility for firefox and chrome
   var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
   var pc = new myPeerConnection({
@@ -15,7 +15,7 @@ function LogVisits(onNewIP) { //  onNewIp - your listener function for new IPs
     ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g;
 
   function iterateIP(ip) {
-    if (!localIPs[ip]) onNewIP(ip);
+    if (!localIPs[ip]) onVisit(ip);
     localIPs[ip] = true;
   }
 
